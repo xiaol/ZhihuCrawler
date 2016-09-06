@@ -2,14 +2,22 @@
 zhihu.com的爬虫，通过话题id抓取话题下的问题id，再通过问题id抓取相应的答案。
 
 依赖的软件：
+
 Python 2.7
+
 MySQL
 依赖的python库：
+
 BeautifulSoup
+
 Requests
+
 Html2Text
+
 Termcolor
+
 Lxml
+
 Rq
 
 运行步骤：
