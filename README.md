@@ -6,6 +6,7 @@ zhihu.com的爬虫，通过话题id抓取话题下的问题id，再通过问题i
 Python 2.7
 
 MySQL
+
 依赖的python库：
 
 BeautifulSoup
