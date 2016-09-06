@@ -7,6 +7,8 @@ Python 2.7
 
 MySQL
 
+Redis
+
 依赖的python库：
 
 BeautifulSoup
@@ -33,11 +35,13 @@ Rq
 
 5、运行python findQuestionByTopic.py  通过话题id寻找该话题下面有哪些问题，并将数据存储在QUESTION表中
 
-6、运行 python queueAnswer.py 构建分布式队列，通过该队列寻找问题的答案。
+6、启动Redis(默认端口)
 
-7、运行 python findAnswerWorker.py 执行队列任务，获取问题答案，将答案存储在ANSWER表中
+7、运行 python queueAnswer.py 构建分布式队列，通过该队列寻找问题的答案。
 
-8、运行 python updateQuestion.py 对QUESTION表及TOPIC表进行更新
+8、运行 python findAnswerWorker.py 执行队列任务，获取问题答案，将答案存储在ANSWER表中
+
+9、运行 python updateQuestion.py 对QUESTION表及TOPIC表进行更新
 
 提醒：
 
