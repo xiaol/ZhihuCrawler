@@ -10,6 +10,7 @@ CREATE TABLE `QUESTION` (
   `LAST_VISIT` int(10) unsigned DEFAULT NULL,
   `ADD_TIME` int(10) unsigned NOT NULL,
   `TOP_ANSWER_NUMBER` int(10) unsigned NOT NULL,
+  `IS_FLAG` int(1) DEFAULT 0,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `LINK_ID` (`LINK_ID`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1101529 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -23,6 +24,26 @@ CREATE TABLE `TOPIC` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `LINK_ID` (`LINK_ID`)
 ) ENGINE=MyISAM AUTO_INCREMENT=49486 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+ CREATE TABLE `ANSWER` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `QURL` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `TITLE` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `DETAIL` varchar(10000) COLLATE utf8_unicode_ci NOT NULL,
+  `TOPICS` TEXT COLLATE utf8_unicode_ci NOT NULL,
+  `AURL` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `USERID` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `CONTENT` TEXT COLLATE utf8_unicode_ci NOT NULL,
+  `UPVOTE` int(10) unsigned NOT NULL,
+  `USERURL` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `ADD_TIME` int(10) unsigned NOT NULL,
+  `LAST_VISIT` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `AURL` (`AURL`)
+) ENGINE=MyISAM AUTO_INCREMENT=49486 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 
 
 /* Insert initial question data to DATABASE */

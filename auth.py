@@ -67,8 +67,17 @@ class AccountError(Exception):
 
 
 def download_captcha():
+    headers = {
+            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
+            'Host': "www.zhihu.com",
+            'Origin': "http://www.zhihu.com",
+            'Pragma': "no-cache",
+            'Referer': "http://www.zhihu.com/"
+        }
+
+
     url = "https://www.zhihu.com/captcha.gif"
-    r = requests.get(url, params={"r": random.random(), "type": "login"}, verify=False)
+    r = requests.get(url, params={"r": random.random(), "type": "login"}, verify=False, headers=headers)
     if int(r.status_code) != 200:
         raise NetworkError(u"验证码请求失败")
     image_name = u"verify." + r.headers['content-type'].split("/")[1]
@@ -95,8 +104,16 @@ def download_captcha():
     return captcha_code
 
 def search_xsrf():
+    headers = {
+            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
+            'Host': "www.zhihu.com",
+            'Origin': "http://www.zhihu.com",
+            'Pragma': "no-cache",
+            'Referer': "http://www.zhihu.com/"
+        }
+
     url = "http://www.zhihu.com/"
-    r = requests.get(url, verify=False)
+    r = requests.get(url, verify=False, headers=headers)
     if int(r.status_code) != 200:
         raise NetworkError(u"验证码请求失败")
     results = re.compile(r"\<input\stype=\"hidden\"\sname=\"_xsrf\"\svalue=\"(\S+)\"", re.DOTALL).findall(r.text)
@@ -125,13 +142,13 @@ def upload_form(form):
         raise ValueError(u"账号类型错误")
 
     headers = {
-        'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
-        'Host': "www.zhihu.com",
-        'Origin': "http://www.zhihu.com",
-        'Pragma': "no-cache",
-        'Referer': "http://www.zhihu.com/",
-        'X-Requested-With': "XMLHttpRequest"
-    }
+            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
+            'Host': "www.zhihu.com",
+            'Origin': "http://www.zhihu.com",
+            'Pragma': "no-cache",
+            'Referer': "http://www.zhihu.com/"
+        }
+
 
     r = requests.post(url, data=form, headers=headers, verify=False)
     if int(r.status_code) != 200:
@@ -162,8 +179,17 @@ def upload_form(form):
 
 def islogin():
     # check session
+    headers = {
+            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
+            'Host': "www.zhihu.com",
+            'Origin': "http://www.zhihu.com",
+            'Pragma': "no-cache",
+            'Referer': "http://www.zhihu.com/"
+        }
+
+
     url = "https://www.zhihu.com/settings/profile"
-    r = requests.get(url, allow_redirects=False, verify=False)
+    r = requests.get(url, allow_redirects=False, verify=False, headers=headers)
     status_code = int(r.status_code)
     if status_code == 301 or status_code == 302:
         # 未登录
@@ -173,6 +199,7 @@ def islogin():
     else:
         Logging.warn(u"网络故障")
         return None
+
 
 
 def read_account_from_config_file(config_file="config.ini"):

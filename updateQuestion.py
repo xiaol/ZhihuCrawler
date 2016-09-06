@@ -9,7 +9,7 @@ import logging
 import threading
 import Queue
 import ConfigParser
-
+import datetime
 from util import get_content
 
 
@@ -38,13 +38,18 @@ class UpdateOneQuestion(threading.Thread):
             link_id = parameters[0]
             count_id = parameters[1]
             self.update(link_id,count_id)
-
+            time.sleep(2)
     def update(self,link_id,count_id):
         time_now = int(time.time())
         questionUrl = 'http://www.zhihu.com/question/' + link_id
 
         content = get_content(questionUrl,count_id)
-        if content == "FAIL":
+        
+	if content == "NO FOUND":
+	    sql = "UPDATE QUESTION SET LAST_VISIT = %s, IS_FLAG = 2  WHERE LINK_ID = %s"
+            self.cursor.execute(sql,(time_now,link_id))
+	    return
+	if content == "FAIL":
             sql = "UPDATE QUESTION SET LAST_VISIT = %s WHERE LINK_ID = %s"
             self.cursor.execute(sql,(time_now,link_id))
             return
@@ -140,9 +145,9 @@ class UpdateQuestions:
 
         time_now = int(time.time())
         before_last_visit_time = time_now - 12*3600
-        after_add_time = time_now - 24*3600*14
+        after_add_time = time_now - 24*3600*50
 
-        sql = "SELECT LINK_ID from QUESTION WHERE LAST_VISIT < %s AND ADD_TIME > %s AND ANSWER < 8 AND TOP_ANSWER_NUMBER < 50 ORDER BY LAST_VISIT"
+        sql = "SELECT LINK_ID from QUESTION WHERE LAST_VISIT < %s AND ADD_TIME > %s  AND IS_FLAG =0 AND FOCUS=0 ORDER BY LAST_VISIT limit 100000" #AND ANSWER < 8 AND TOP_ANSWER_NUMBER < 50
         self.cursor.execute(sql,(before_last_visit_time,after_add_time))
         results = self.cursor.fetchall()
         
@@ -153,7 +158,7 @@ class UpdateQuestions:
 
             queue.put([link_id, i])
             i = i + 1
-
+	print i 
         thread_amount = self.question_thread_amount
 
         for i in range(thread_amount):
@@ -171,5 +176,14 @@ class UpdateQuestions:
 
 
 if __name__ == '__main__':
-    question_spider = UpdateQuestions()
-    question_spider.run()
+    while True:
+	t00 = datetime.datetime.now()
+	t00 = t00.strftime("%Y-%m-%d %H:%M:%S")
+	logging.warn("===============this round of content start====================%s"%(t00))
+        question_spider = UpdateQuestions()
+        question_spider.run()
+	t01 = datetime.datetime.now()
+	t01 = t01.strftime("%Y-%m-%d %H:%M:%S")
+	logging.warn("===============this round of content complete====================%s"%(t01))
+	time.sleep(3600*2)
+

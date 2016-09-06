@@ -106,7 +106,7 @@ def get_content(toUrl,count):
         if e.code == 404:
             if count % 1 == 0:
                 print str(count) + ", Error: " + str(e) + " URL: " + toUrl
-            return "FAIL"
+            return "NO FOUND"
         else:
             try:
                 page = urlopen_with_retry(req, proxy_all)

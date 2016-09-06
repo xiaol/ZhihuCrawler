@@ -42,7 +42,7 @@ class UpdateOneTopic(threading.Thread):
     def find_question_by_link(self,topic_url,count_id):
         content = get_content(topic_url,count_id)
 
-        if content == "FAIL":
+        if content in ["FAIL","NO FOUND"]:
             return 0
 
         soup = BeautifulSoup(content)
@@ -73,7 +73,7 @@ class UpdateOneTopic(threading.Thread):
     def find_new_question_by_topic(self,link_id,count_id):
         new_question_amount_total = 0
 
-        for i in range(1,100000):
+        for i in range(1,10000):
             topic_url = 'http://www.zhihu.com/topic/' + link_id + '/questions?page=' + str(i)
             print topic_url +"," + "start"
             new_question_amount_one_page = self.find_question_by_link(topic_url,count_id)
@@ -154,5 +154,5 @@ if __name__ == '__main__':
 	t01 = datetime.datetime.now()
 	t01 = t01.strftime("%Y-%m-%d %H:%M:%S")
 	logging.warn("===============this round of content complete====================%s"%(t01))
-	time.sleep(3600*12)
+	time.sleep(3600*2)
 
