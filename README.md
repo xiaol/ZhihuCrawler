@@ -13,9 +13,11 @@ Lxml
 Rq
 
 运行步骤：
+
 1、下载代码（git clone https://github.com/xiaol/ZhihuCrawler）
 
 2、运行init.sql 建立数据库及相应表,插入TOPIC表的数据。
+
 3、修改config.ini配置文件（info代表知乎的账号及密码，db代表mysql的host、port等信息）
 4、运行python auth.py，登陆知乎
 5、运行python findQuestionByTopic.py  通过话题id寻找该话题下面有哪些问题，并将数据存储在QUESTION表中
